@@ -46,18 +46,22 @@ class Storage {
 	}
 }
 
-function deleteProject(data, storage) {
-	let toKeep = storage.projects.active.filter(
-		(project) => project.id !== data.id
-	);
-	storage.projects.active = toKeep;
-	localStorage.setItem("projects", JSON.stringify(storage.projects));
+function deleteProject(projectId, location) {
+	let storage = JSON.parse(localStorage.getItem(location));
+
+	let toKeep = storage.active.filter((project) => project.id !== projectId);
+	storage.active = toKeep;
+	localStorage.setItem("projects", JSON.stringify(storage));
 }
 
-function addProjectData(data, storage) {
-	storage.projects.active.push(data);
+function addProjectData(data, location) {
+	let storage = JSON.parse(localStorage.getItem(location));
 
-	localStorage.setItem("projects", JSON.stringify(storage.projects));
+	storage.active.push(data);
+	localStorage.setItem("projects", JSON.stringify(storage));
+
+	let newProjectData = storage.active[storage.active.length - 1];
+	return newProjectData;
 }
 
-export { isStorageAvailable, Storage, addProjectData };
+export { isStorageAvailable, Storage, addProjectData, deleteProject };

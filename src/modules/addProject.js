@@ -1,7 +1,7 @@
 import { addProjectData } from "./storageHelper";
 import { Card } from "./card";
 
-export default function AddProject(storage) {
+export default function AddProject() {
 	const addProjBtn = document.getElementById("add-project-btn");
 	const dialog = document.getElementById("add-project-wrapper");
 	const cancelProjBtn = document.getElementById("cancel-project-btn");
@@ -31,10 +31,8 @@ export default function AddProject(storage) {
 		let randomNumb = Math.floor(Math.random() * (500 - 1 + 1)) + 1;
 		data.id = data.title[0] + data.title[2] + data.title[3] + "-" + randomNumb;
 
-		addProjectData(data, storage);
-		let newDataStored =
-			storage.projects.active[storage.projects.active.length - 1];
-		// console.log(newDataStored)
+		let newDataStored = addProjectData(data, "projects");
+
 		new Card(newDataStored, document.querySelector(".project-list-wrapper"));
 		dialog.close();
 	});

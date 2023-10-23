@@ -1,3 +1,5 @@
+import { deleteProject } from "./storageHelper";
+
 class HTMLElement {
 	constructor(element, className, textContent, parentDom) {
 		this.dom = document.createElement(element);
@@ -58,6 +60,16 @@ class Card {
 			this.btnWrapper.dom
 		);
 		parentDom.appendChild(this.wrapper.dom);
+
+		this.deleteBtn.dom.addEventListener("click", (e) => {
+			e.preventDefault();
+
+			deleteProject(this.id, "projects");
+			this.wrapper.dom.remove();
+		});
+	}
+	getCard() {
+		return this;
 	}
 }
 
