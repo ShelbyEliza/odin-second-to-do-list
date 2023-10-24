@@ -3,11 +3,11 @@ import { Card } from "./card";
 
 export default class Modal {
 	constructor() {
-		const addProjBtn = document.getElementById("add-project-btn");
+		this.formElement = document.getElementById("modal-form");
 		this.dialog = document.getElementById("add-project-wrapper");
+		const addProjBtn = document.getElementById("add-project-btn");
 		const cancelProjBtn = document.getElementById("cancel-project-btn");
 		const submitProjBtn = document.getElementById("submit-project-btn");
-		// const editProjBtn = document.getElementById("edit-project-btn");
 		this.titleInput = document.getElementById("title");
 		this.dueDateInput = document.getElementById("dueDate");
 		this.descriptionInput = document.getElementById("description");
@@ -20,28 +20,21 @@ export default class Modal {
 
 		cancelProjBtn.addEventListener("click", (e) => {
 			e.preventDefault();
+			this.turnOffEditMode();
+			this.formElement.reset();
+
 			this.dialog.close();
 		});
 
-		// editProjBtn.addEventListener("click", (e) => {
-		// 	e.preventDefault();
-
-		// 	let data = {
-		// 		title: titleInput.value,
-		// 		dueDate: dueDateInput.value,
-		// 		description: descriptionInput.value,
-		// 	};
-		// 	editProject(data);
-		// });
-
 		submitProjBtn.addEventListener("click", (e) => {
 			e.preventDefault();
-			console.log(this.editMode);
+
 			let data = {
 				title: this.titleInput.value,
 				dueDate: this.dueDateInput.value,
 				description: this.descriptionInput.value,
 			};
+			/** if this is a new project: */
 			if (this.editMode !== true) {
 				let randomNumb = Math.floor(Math.random() * (500 - 1 + 1)) + 1;
 				data.id =
@@ -54,18 +47,14 @@ export default class Modal {
 					document.querySelector(".project-list-wrapper"),
 					this
 				);
+				//** else you are editing a project: */
 			} else {
 				data.id = this.editData.id;
-				console.log(data);
 				let newDataStored = editProjectData(data, "projects");
-				new Card(
-					newDataStored,
-					document.querySelector(".project-list-wrapper"),
-					this
-				);
+				this.card.editCard(newDataStored);
 				this.turnOffEditMode();
 			}
-
+			this.formElement.reset();
 			this.dialog.close();
 		});
 	}
@@ -77,10 +66,11 @@ export default class Modal {
 		this.editMode = false;
 		this.editData = "";
 	}
-	openModal(projectData) {
+	openModal(projectData, card) {
 		this.dialog.showModal();
 		this.titleInput.value = projectData.title;
 		this.dueDateInput.value = projectData.dueDate;
 		this.descriptionInput.value = projectData.description;
+		this.card = card;
 	}
 }

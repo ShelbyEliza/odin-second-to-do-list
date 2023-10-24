@@ -68,7 +68,6 @@ function editProjectData(data, location) {
 	let editedStorage = storage.active.filter(
 		(project) => project.id !== data.id
 	);
-	console.log(editedStorage);
 	editedStorage.push(data);
 	storage.active = editedStorage;
 	localStorage.setItem("projects", JSON.stringify(storage));

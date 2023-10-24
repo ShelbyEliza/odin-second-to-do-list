@@ -26,7 +26,6 @@ class HTMLElement {
 
 class Card {
 	constructor(proj, parentDom, modal) {
-		console.log(modal);
 		this.id = proj.id;
 		this.wrapper = new HTMLElement("div", "card-wrapper");
 		this.title = new HTMLElement("h3", "title", proj.title, this.wrapper.dom);
@@ -72,15 +71,17 @@ class Card {
 		this.editBtn.dom.addEventListener("click", (e) => {
 			e.preventDefault();
 
-			modal.openModal(proj);
+			modal.openModal(proj, this);
 			modal.turnOnEditMode(proj);
-
-			/** can't cancel editing without deleting card dom */
-			this.wrapper.dom.remove();
 		});
 	}
 	getCard() {
 		return this;
+	}
+	editCard(newDetails) {
+		this.title.dom.textContent = newDetails.title;
+		this.dueDate.dom.textContent = newDetails.dueDate;
+		this.description.dom.textContent = newDetails.description;
 	}
 }
 
