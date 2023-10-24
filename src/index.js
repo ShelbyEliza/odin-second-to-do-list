@@ -1,5 +1,5 @@
 import { Storage } from "./modules/storageHelper";
-import AddProject from "./modules/addProject";
+import Modal from "./modules/modal";
 import { Card } from "./modules/card";
 
 class App {
@@ -7,12 +7,12 @@ class App {
 		const projListWrapper = document.querySelector(".project-list-wrapper");
 		let projectStorage = new Storage("projects");
 
+		let modal = new Modal();
 		if (projectStorage.projects.active.length > 0) {
 			projectStorage.projects.active.forEach((project) => {
-				new Card(project, projListWrapper);
+				new Card(project, projListWrapper, modal);
 			});
 		}
-		new AddProject();
 	}
 }
 const app = new App();

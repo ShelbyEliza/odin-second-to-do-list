@@ -63,5 +63,23 @@ function addProjectData(data, location) {
 	let newProjectData = storage.active[storage.active.length - 1];
 	return newProjectData;
 }
+function editProjectData(data, location) {
+	let storage = JSON.parse(localStorage.getItem(location));
+	let editedStorage = storage.active.filter(
+		(project) => project.id !== data.id
+	);
+	console.log(editedStorage);
+	editedStorage.push(data);
+	storage.active = editedStorage;
+	localStorage.setItem("projects", JSON.stringify(storage));
+	let newProjectData = storage.active[storage.active.length - 1];
+	return newProjectData;
+}
 
-export { isStorageAvailable, Storage, addProjectData, deleteProject };
+export {
+	isStorageAvailable,
+	Storage,
+	addProjectData,
+	deleteProject,
+	editProjectData,
+};
