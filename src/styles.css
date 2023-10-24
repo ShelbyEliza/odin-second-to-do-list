@@ -121,3 +121,6 @@ label {
 	display: flex;
 	justify-content: space-between;
 }
+.card-wrapper.priority {
+	background-color: #9198e5;
+}

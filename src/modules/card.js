@@ -19,6 +19,9 @@ class HTMLElement {
 	addToClassList(className) {
 		this.dom.classList.add(className);
 	}
+	removeFromClassList(className) {
+		this.dom.classList.remove(className);
+	}
 	appendToParent(parentDom) {
 		parentDom.appendChild(this.dom);
 	}
@@ -41,6 +44,10 @@ class Card {
 			proj.description,
 			this.wrapper.dom
 		);
+		this.priority = proj.priority;
+		if (this.priority === true) {
+			this.wrapper.addToClassList("priority");
+		}
 		this.btnWrapper = new HTMLElement(
 			"div",
 			"card-btn-wrapper",
@@ -82,6 +89,14 @@ class Card {
 		this.title.dom.textContent = newDetails.title;
 		this.dueDate.dom.textContent = newDetails.dueDate;
 		this.description.dom.textContent = newDetails.description;
+		if (this.priority !== newDetails.priority) {
+			this.priority = newDetails.priority;
+			if (this.priority === true) {
+				this.wrapper.addToClassList("priority");
+			} else {
+				this.wrapper.removeFromClassList("priority");
+			}
+		}
 	}
 }
 

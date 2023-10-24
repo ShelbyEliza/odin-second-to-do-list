@@ -11,6 +11,7 @@ export default class Modal {
 		this.titleInput = document.getElementById("title");
 		this.dueDateInput = document.getElementById("dueDate");
 		this.descriptionInput = document.getElementById("description");
+		this.priorityInput = document.getElementById("priority");
 		this.editMode = false;
 		this.editData = "";
 
@@ -33,6 +34,7 @@ export default class Modal {
 				title: this.titleInput.value,
 				dueDate: this.dueDateInput.value,
 				description: this.descriptionInput.value,
+				priority: this.priorityInput.checked,
 			};
 			/** if this is a new project: */
 			if (this.editMode !== true) {
@@ -71,6 +73,7 @@ export default class Modal {
 		this.titleInput.value = projectData.title;
 		this.dueDateInput.value = projectData.dueDate;
 		this.descriptionInput.value = projectData.description;
+		this.priorityInput.checked = projectData.priority;
 		this.card = card;
 	}
 }
