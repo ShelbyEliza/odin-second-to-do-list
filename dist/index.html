@@ -28,9 +28,19 @@
           <label for="description">Description:
             <textarea id="description" name="description" rows="4" cols="40">Give me the deats!</textarea>
           </label>
-          <label for="priority">Priority
+          <label for="priority">Priority:
             <input type="checkbox" id="priority" name="priority" />
           </label>
+          <div class="to-do-wrapper">
+            <label for="to-dos">To Dos:
+              <input type="text" id="to-do" name="to-do" />
+            </label>
+            <button id="add-to-do-btn">Add To Do</button>
+            <div id="to-do-list-div">
+
+            </div>
+          </div>
+
           <div class="btn-wrapper">
             <button id="submit-project-btn">Submit</button>
             <!-- <button hidden id="edit-project-btn">Edit</button> -->
@@ -41,9 +51,9 @@
       </dialog>
       <div class="browse-wrapper">
         <h2>Browse By:</h2>
-        <button id="browse-btn">All Projects</button>
-        <button id="browse-btn">Coming Up</button>
-        <button id="browse-btn">Important</button>
+        <button id="all-projects-btn">All Projects</button>
+        <button id="coming-up-btn">Coming Up</button>
+        <button id="priority-btn">Priority</button>
       </div>
       <div class="project-list-wrapper">
         <h2 class="project-list-heading">All Projects</h2>

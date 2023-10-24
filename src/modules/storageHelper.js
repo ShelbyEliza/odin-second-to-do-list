@@ -55,6 +55,7 @@ function deleteProject(projectId, location) {
 }
 
 function addProjectData(data, location) {
+	console.log(data);
 	let storage = JSON.parse(localStorage.getItem(location));
 
 	storage.active.push(data);

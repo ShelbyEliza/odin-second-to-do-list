@@ -48,6 +48,18 @@ class Card {
 		if (this.priority === true) {
 			this.wrapper.addToClassList("priority");
 		}
+		this.toDoList = new HTMLElement(
+			"ul",
+			"to-do-list",
+			"To Do:",
+			this.wrapper.dom
+		);
+		// this.toDoListInfo = proj.toDoList
+		if (proj.toDos) {
+			proj.toDos.forEach((toDo) => {
+				new HTMLElement("li", "to-do-item", toDo, this.toDoList.dom);
+			});
+		}
 		this.btnWrapper = new HTMLElement(
 			"div",
 			"card-btn-wrapper",
@@ -89,6 +101,13 @@ class Card {
 		this.title.dom.textContent = newDetails.title;
 		this.dueDate.dom.textContent = newDetails.dueDate;
 		this.description.dom.textContent = newDetails.description;
+		while (this.toDoList.dom.firstChild) {
+			this.toDoList.dom.removeChild(this.toDoList.dom.lastChild);
+		}
+		newDetails.toDos.forEach((toDo) => {
+			new HTMLElement("li", "to-to-item", toDo, this.toDoList.dom);
+		});
+
 		if (this.priority !== newDetails.priority) {
 			this.priority = newDetails.priority;
 			if (this.priority === true) {
@@ -100,4 +119,4 @@ class Card {
 	}
 }
 
-export { Card };
+export { Card, HTMLElement };

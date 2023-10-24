@@ -124,3 +124,23 @@ label {
 .card-wrapper.priority {
 	background-color: #9198e5;
 }
+#to-do-list-div {
+	display: flex;
+	padding: 0.4rem;
+	align-items: center;
+	gap: 0.8rem;
+}
+.temp-to-do-div {
+	display: flex;
+	font-size: 0.8rem;
+	gap: 0.2rem;
+	border: 1px solid violet;
+	align-items: baseline;
+	border-radius: 0.2rem;
+}
+.temp-to-do-div button {
+	border-radius: 0.2rem;
+}
+.temp-to-do-div p {
+	margin: 0rem;
+}
