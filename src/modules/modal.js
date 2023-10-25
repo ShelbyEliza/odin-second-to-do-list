@@ -45,6 +45,7 @@ export default class Modal {
 
 		cancelProjBtn.addEventListener("click", (e) => {
 			e.preventDefault();
+
 			this.turnOffEditMode();
 			while (this.toDoDiv.firstChild) {
 				this.toDoDiv.removeChild(this.toDoDiv.lastChild);
@@ -52,7 +53,6 @@ export default class Modal {
 			this.toDoData = [];
 
 			this.formElement.reset();
-
 			this.dialog.close();
 		});
 
@@ -73,12 +73,16 @@ export default class Modal {
 					data.title[0] + data.title[2] + data.title[3] + "-" + randomNumb;
 
 				let newDataStored = addProjectData(data, "projects");
+				let parentDom;
 
-				new Card(
-					newDataStored,
-					document.querySelector(".project-list-wrapper"),
-					this
-				);
+				if (newDataStored.priority === true) {
+					parentDom = document.getElementById("priority-list-wrapper");
+				} else {
+					parentDom = document.getElementById("project-list-wrapper");
+				}
+
+				new Card(newDataStored, parentDom, this);
+
 				//** else you are editing a project: */
 			} else {
 				data.id = this.editData.id;

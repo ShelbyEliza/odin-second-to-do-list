@@ -89,17 +89,23 @@ label {
 	justify-content: center;
 	padding: 0.8rem;
 }
+.active {
+	border: 1px solid violet;
+}
 /* Cards */
-.project-list-wrapper {
+/* .project-list-wrapper {
 	background-color: black;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
 	padding: 1rem;
 	gap: 0.8rem;
-}
-.project-list-wrapper .project-list-heading {
-	grid-column: 1/4;
-	justify-self: center;
+} */
+.proj-wrapper {
+	background-color: black;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	padding: 1rem;
+	gap: 0.8rem;
 }
 .card-wrapper {
 	background-color: white;
@@ -121,7 +127,8 @@ label {
 	display: flex;
 	justify-content: space-between;
 }
-.card-wrapper.priority {
+.card-wrapper.priority,
+#project-expanded-wrapper.priority {
 	background-color: #9198e5;
 }
 #to-do-list-div {

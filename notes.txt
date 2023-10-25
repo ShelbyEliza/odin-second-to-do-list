@@ -1,0 +1,98 @@
+import { Storage } from "./modules/storageHelper";
+import Modal from "./modules/modal";
+import { Card, HTMLElement } from "./modules/card";
+
+class App {
+	constructor() {
+		this.view = "all";
+		this.priorityProjects = [];
+		this.upcomingProjects = [];
+		this.cardIds = [];
+		this.priorityCardIds = [];
+
+		const allBtn = document.getElementById("all-btn");
+		const priorityBtn = document.getElementById("priority-btn");
+		this.projListWrapper = document.querySelector(".project-list-wrapper");
+		
+		this.projectStorage = new Storage("projects");
+
+		// const upcomingBtn = document.getElementById("upcoming-btn");
+		// this.allWrapper = new HTMLElement("div", "proj-wrapper");
+		// this.priorityWrapper = new HTMLElement("div", "proj-wrapper");
+		// this.allWrapper.dom.id = "all-projects-wrapper";
+		// this.priorityWrapper.dom.id = "priority-projects-wrapper";
+		// const upComingWrapper = new HTMLElement("div", "proj-wrapper");
+		// this.activeProjects = projectStorage.projects.active;
+
+		this.modal = new Modal();
+
+		this.setAllView();
+		this.updatePriorityList();
+		this.setPriorityView();
+
+		allBtn.addEventListener("click", (e) => {
+			e.preventDefault();
+			if (this.view !== "all") {
+				// this.switchView(this.allWrapper.dom);
+				this.view = "all";
+			}
+		});
+		priorityBtn.addEventListener("click", (e) => {
+			e.preventDefault();
+
+			if (this.view !== "priority") {
+				this.view = "priority";
+				// this.switchView(this.priorityWrapper.dom);
+			}
+		});
+	}
+	switchView(newChild) {
+		while (this.projListWrapper.firstChild) {
+			this.projListWrapper.removeChild(this.projListWrapper.firstChild);
+		}
+		this.projListWrapper.appendChild(newChild);
+	}
+	setPriorityView() {
+		let priorityProjs = [];
+		let activeProjects = this.projectStorage.projects.active;
+
+		activeProjects.forEach((project) => {
+			if (
+				project.priority === true &&
+				!this.priorityCardIds.includes(project.id)
+			) {
+				this.priorityProjects.push(project);
+				new Card(project, this.projListWrapper, this.modal);
+			}
+		});
+	}
+
+	updatePriorityList() {
+		let activeProjects = this.projectStorage.projects.active;
+		let priorityProjs = activeProjects.filter((proj) => proj.priority === true);
+		let priorityIds = priorityProjs.map((proj) => proj.id);
+
+		console.log(priorityIds);
+		let cardArray = Array.from(this.projListWrapper.childNodes);
+		console.log(cardArray);
+		cardArray.forEach((card) => {
+			if (!priorityIds.includes(card.id)) {
+				card.remove();
+			}
+		});
+	}
+
+	setAllView() {
+		let activeProjects = this.projectStorage.projects.active;
+		if (activeProjects.length > 0) {
+			activeProjects.forEach((project) => {
+				if (!this.cardIds.includes(project.id)) {
+					new Card(project, this.projListWrapper, this.modal);
+					this.cardIds.push(project.id);
+				}
+			});
+			// this.switchView(this.allWrapper.dom);
+		}
+	}
+}
+const app = new App();

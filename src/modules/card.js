@@ -28,9 +28,11 @@ class HTMLElement {
 }
 
 class Card {
-	constructor(proj, parentDom, modal) {
+	constructor(proj, parentDom, modal, expanded) {
 		this.id = proj.id;
 		this.wrapper = new HTMLElement("div", "card-wrapper");
+		this.wrapper.dom.id = proj.id;
+		this.wrapper.dom.dataset.priority = proj.priority;
 		this.title = new HTMLElement("h3", "title", proj.title, this.wrapper.dom);
 		this.dueDate = new HTMLElement(
 			"p",
@@ -66,6 +68,12 @@ class Card {
 			"",
 			this.wrapper.dom
 		);
+		this.expandBtn = new HTMLElement(
+			"button",
+			"expand-btn",
+			"Expand",
+			this.btnWrapper.dom
+		);
 		this.editBtn = new HTMLElement(
 			"button",
 			"edit-btn",
@@ -79,6 +87,14 @@ class Card {
 			this.btnWrapper.dom
 		);
 		parentDom.appendChild(this.wrapper.dom);
+
+		this.expandBtn.dom.addEventListener("click", (e) => {
+			e.preventDefault();
+			let projectDialog = document.getElementById("project-expanded-wrapper");
+
+			projectDialog.showModal();
+			expanded.expandProject(this.id, this);
+		});
 
 		this.deleteBtn.dom.addEventListener("click", (e) => {
 			e.preventDefault();
@@ -110,12 +126,15 @@ class Card {
 
 		if (this.priority !== newDetails.priority) {
 			this.priority = newDetails.priority;
+			this.wrapper.dom.dataset.priority = newDetails.priority;
 			if (this.priority === true) {
 				this.wrapper.addToClassList("priority");
 			} else {
 				this.wrapper.removeFromClassList("priority");
 			}
 		}
+		// let location = document.location
+		document.location.reload();
 	}
 }
 

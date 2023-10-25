@@ -37,27 +37,35 @@
             </label>
             <button id="add-to-do-btn">Add To Do</button>
             <div id="to-do-list-div">
-
             </div>
           </div>
 
           <div class="btn-wrapper">
             <button id="submit-project-btn">Submit</button>
-            <!-- <button hidden id="edit-project-btn">Edit</button> -->
             <button id="cancel-project-btn">Cancel</button>
           </div>
-
         </form>
+      </dialog>
+      <dialog id="project-expanded-wrapper">
+        <h2 class="title-ex"></h2>
+        <p class="due-date-ex"></p>
+        <p class="description-ex"></p>
+        <ul class="to-do-list-ex">
+        </ul>
+        <div class="btn-wrapper">
+          <button id="edit-proj-btn">Edit</button>
+          <button id="close-proj-btn">Close</button>
+          <button id="delete-proj-btn">Delete</button>
+        </div>
       </dialog>
       <div class="browse-wrapper">
         <h2>Browse By:</h2>
-        <button id="all-projects-btn">All Projects</button>
-        <button id="coming-up-btn">Coming Up</button>
+        <button id="all-btn">All Projects</button>
+        <button id="upcoming-btn">Upcoming</button>
         <button id="priority-btn">Priority</button>
       </div>
-      <div class="project-list-wrapper">
-        <h2 class="project-list-heading">All Projects</h2>
-
+      <div id="priority-list-wrapper" class="proj-wrapper"></div>
+      <div id="project-list-wrapper" class="proj-wrapper">
       </div>
 
     </div>
