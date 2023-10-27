@@ -50,18 +50,13 @@ class Card {
 		if (this.priority === true) {
 			this.wrapper.addToClassList("priority");
 		}
-		this.toDoList = new HTMLElement(
-			"ul",
-			"to-do-list",
-			"To Do:",
-			this.wrapper.dom
-		);
-		// this.toDoListInfo = proj.toDoList
+		this.toDoList = new HTMLElement("ul", "to-do-list", "", this.wrapper.dom);
 		if (proj.toDos) {
 			proj.toDos.forEach((toDo) => {
 				new HTMLElement("li", "to-do-item", toDo, this.toDoList.dom);
 			});
 		}
+		this.toDoList.dom.hidden = true;
 		this.btnWrapper = new HTMLElement(
 			"div",
 			"card-btn-wrapper",
@@ -83,14 +78,14 @@ class Card {
 		this.deleteBtn = new HTMLElement(
 			"button",
 			"delete-btn",
-			"X",
+			"Delete",
 			this.btnWrapper.dom
 		);
 		parentDom.appendChild(this.wrapper.dom);
 
 		this.expandBtn.dom.addEventListener("click", (e) => {
 			e.preventDefault();
-			let projectDialog = document.getElementById("project-expanded-wrapper");
+			let projectDialog = document.getElementById("dialog-expanded");
 
 			projectDialog.showModal();
 			expanded.expandProject(this.id, this);

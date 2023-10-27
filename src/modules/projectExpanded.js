@@ -3,7 +3,8 @@ import { deleteProject } from "./storageHelper";
 
 export default class ProjectExpanded {
 	constructor(editModal) {
-		this.projectDialog = document.getElementById("project-expanded-wrapper");
+		this.projectDialog = document.getElementById("dialog-expanded");
+
 		this.editDialog = document.getElementById("add-project-wrapper");
 		this.editModal = editModal;
 
@@ -18,6 +19,8 @@ export default class ProjectExpanded {
 
 		closeBtn.addEventListener("click", (e) => {
 			e.preventDefault();
+
+			this.clearDom();
 
 			this.projectDialog.close();
 		});
@@ -43,6 +46,7 @@ export default class ProjectExpanded {
 
 			this.clearDom();
 		});
+		this.projectDialog.close();
 	}
 	clearDom() {
 		this.title.textContent = "";
@@ -51,6 +55,9 @@ export default class ProjectExpanded {
 		this.projectDialog.dataset.projectId = "";
 		this.id = "";
 		this.card = "";
+		while (this.toDoWrapper.firstChild) {
+			this.toDoWrapper.removeChild(this.toDoWrapper.lastChild);
+		}
 	}
 	getProject(projId) {
 		let storage = JSON.parse(localStorage.getItem("projects"));

@@ -9,11 +9,11 @@ export default class Modal {
 		const addProjBtn = document.getElementById("add-project-btn");
 		const cancelProjBtn = document.getElementById("cancel-project-btn");
 		const submitProjBtn = document.getElementById("submit-project-btn");
-		this.titleInput = document.getElementById("title");
-		this.dueDateInput = document.getElementById("dueDate");
-		this.descriptionInput = document.getElementById("description");
-		this.priorityInput = document.getElementById("priority");
-		this.toDoInput = document.getElementById("to-do");
+		this.titleInput = document.getElementById("title-input");
+		this.dueDateInput = document.getElementById("dueDate-input");
+		this.descriptionInput = document.getElementById("description-input");
+		this.priorityInput = document.getElementById("priority-input");
+		this.toDoInput = document.getElementById("to-do-input");
 		this.toDoDiv = document.getElementById("to-do-list-div");
 		this.editMode = false;
 		this.editData = "";
