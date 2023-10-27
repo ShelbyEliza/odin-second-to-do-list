@@ -13,4 +13,4 @@ function formatDateView(date) {
 	return format(new Date(formatNewDate(date)), "MMMM dd, yyyy");
 }
 
-export { formatDateView };
+export { formatNewDate, formatDateView };

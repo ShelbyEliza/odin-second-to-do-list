@@ -326,3 +326,8 @@ label {
 .card-wrapper.priority .card-btn-wrapper {
 	background-color: var(--pomelo-red);
 }
+/** Card Holders: */
+.projects-heading {
+	text-align: center;
+	color: var(--foggy-love);
+}

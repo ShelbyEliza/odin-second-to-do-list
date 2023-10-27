@@ -1,3 +1,6 @@
+import { compareAsc, compareDesc } from "date-fns";
+import { formatNewDate } from "./formatDate.js";
+
 function isStorageAvailable() {
 	let storage;
 	try {
@@ -54,16 +57,17 @@ function deleteProject(projectId, location) {
 	localStorage.setItem("projects", JSON.stringify(storage));
 }
 
-function addProjectData(data, location) {
+function addProjectData(data, location, view) {
 	let storage = JSON.parse(localStorage.getItem(location));
 
 	storage.active.push(data);
 	localStorage.setItem("projects", JSON.stringify(storage));
 
 	let newProjectData = storage.active[storage.active.length - 1];
+
 	return newProjectData;
 }
-function editProjectData(data, location) {
+function editProjectData(data, location, view) {
 	let storage = JSON.parse(localStorage.getItem(location));
 	let editedStorage = storage.active.filter(
 		(project) => project.id !== data.id
@@ -75,10 +79,47 @@ function editProjectData(data, location) {
 	return newProjectData;
 }
 
+function sortByAlpha() {
+	let storage = JSON.parse(localStorage.getItem("projects"));
+
+	storage.active.sort(function compareFn(a, b) {
+		if (a.title < b.title) {
+			return -1;
+		} else if (a.title > b.title) {
+			return 1;
+		}
+		return 0;
+	});
+	localStorage.setItem("projects", JSON.stringify(storage));
+}
+
+function sortByDue(setting) {
+	let storage = JSON.parse(localStorage.getItem("projects"));
+
+	if (setting === "ascending") {
+		storage.active.sort((a, b) => {
+			return compareAsc(
+				new Date(formatNewDate(a.dueDate)),
+				new Date(formatNewDate(b.dueDate))
+			);
+		});
+	} else {
+		storage.active.sort((a, b) => {
+			return compareDesc(
+				new Date(formatNewDate(a.dueDate)),
+				new Date(formatNewDate(b.dueDate))
+			);
+		});
+	}
+	localStorage.setItem("projects", JSON.stringify(storage));
+}
+
 export {
 	isStorageAvailable,
 	Storage,
 	addProjectData,
 	deleteProject,
 	editProjectData,
+	sortByAlpha,
+	sortByDue,
 };

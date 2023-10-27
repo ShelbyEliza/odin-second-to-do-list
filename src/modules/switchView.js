@@ -1,26 +1,71 @@
 import Modal from "./modal";
 import { Card } from "./card";
 import ProjectExpanded from "./projectExpanded";
+import { sortByAlpha, sortByDue } from "./storageHelper";
+
+const ascendingBtn = document.getElementById("ascending-btn");
+const descendingBtn = document.getElementById("descending-btn");
+const alphabeticalBtn = document.getElementById("alphabetical-btn");
+const projectListWrapper = document.getElementById("project-list-wrapper");
+const priorityListWrapper = document.getElementById("priority-list-wrapper");
 
 export default class View {
 	constructor() {
-		this.projListWrapper = document.getElementById("project-list-wrapper");
-		this.priorityListWrapper = document.getElementById("priority-list-wrapper");
-
-		this.list = [];
-		this.cardIds = [];
 		this.active = "all";
+		this.currentSort = "alpha";
+
 		this.modal = new Modal();
 		this.expanded = new ProjectExpanded(this.modal);
 
+		ascendingBtn.addEventListener("click", (e) => {
+			e.preventDefault();
+			if (this.currentSort !== "ascending") {
+				sortByDue("ascending", this);
+				this.setCurrentSort("ascending");
+				this.switchView();
+			}
+		});
+		descendingBtn.addEventListener("click", (e) => {
+			e.preventDefault();
+			if (this.currentSort !== "descending") {
+				sortByDue("descending", this.view);
+				this.setCurrentSort("descending");
+				this.switchView();
+			}
+		});
+		alphabeticalBtn.addEventListener("click", (e) => {
+			e.preventDefault();
+			if (this.currentSort !== "alpha") {
+				sortByAlpha(this.view);
+				this.setCurrentSort("alpha");
+				this.switchView();
+			}
+		});
+
 		this.setAllView();
 	}
-	switchView(view) {
-		if (view === "all") {
-			this.setAllView();
-		}
-		if (view === "priority") {
-			this.setPriorityView();
+	setCurrentSort(newSetting) {
+		this.currentSort = newSetting;
+	}
+	switchView() {
+		let storage = JSON.parse(localStorage.getItem("projects"));
+		let activeProjects = storage.active;
+
+		if (activeProjects.length > 0) {
+			while (priorityListWrapper.firstChild) {
+				priorityListWrapper.removeChild(priorityListWrapper.lastChild);
+			}
+			while (projectListWrapper.firstChild) {
+				projectListWrapper.removeChild(projectListWrapper.lastChild);
+			}
+
+			activeProjects.forEach((project) => {
+				if (project.priority === false) {
+					new Card(project, projectListWrapper, this.modal, this.expanded);
+				} else if (project.priority === true) {
+					new Card(project, priorityListWrapper, this.modal, this.expanded);
+				}
+			});
 		}
 	}
 	setAllView() {
@@ -29,14 +74,9 @@ export default class View {
 		if (activeProjects.length > 0) {
 			activeProjects.forEach((project) => {
 				if (project.priority === false) {
-					new Card(project, this.projListWrapper, this.modal, this.expanded);
+					new Card(project, projectListWrapper, this.modal, this.expanded);
 				} else if (project.priority === true) {
-					new Card(
-						project,
-						this.priorityListWrapper,
-						this.modal,
-						this.expanded
-					);
+					new Card(project, priorityListWrapper, this.modal, this.expanded);
 				}
 			});
 		}
