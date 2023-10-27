@@ -38,8 +38,8 @@
           <div class="to-do-wrapper">
             <label for="to-dos">To Dos:
               <input type="text" id="to-do-input" name="to-do" />
+              <button id="add-to-do-btn">Add To Do</button>
             </label>
-            <button id="add-to-do-btn">Add To Do</button>
             <div id="to-do-list-div">
             </div>
           </div>
@@ -53,14 +53,21 @@
       <dialog id="dialog-expanded">
         <div id="project-expanded-wrapper">
           <h2 class="title-ex"></h2>
-          <p class="due-date-ex"></p>
-          <p class="description-ex"></p>
-          <ul class="to-do-list-ex">
-          </ul>
-          <div class="btn-wrapper">
-            <button id="edit-proj-btn">Edit</button>
+          <div class="due-date-ex-wrapper">
+            <h3>Due:</h3>
+            <p class="due-date-ex"></p>
+          </div>
+          <div class="content-ex-wrapper">
+            <p class="description-ex"></p>
+            <h3 class="to-do-ex-heading">To Dos</h3>
+            <ul class="to-do-list-ex">
+            </ul>
+          </div>
+          <div class="btn-wrapper btn-wrapper-ex">
+            <button id="delete-proj-btn" class="delete-btn">Delete</button>
+            <button id="edit-proj-btn" class="edit-btn">Edit</button>
             <button id="close-proj-btn">Close</button>
-            <button id="delete-proj-btn">Delete</button>
+
           </div>
         </div>
       </dialog>

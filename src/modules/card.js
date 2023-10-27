@@ -63,10 +63,10 @@ class Card {
 			"",
 			this.wrapper.dom
 		);
-		this.expandBtn = new HTMLElement(
+		this.deleteBtn = new HTMLElement(
 			"button",
-			"expand-btn",
-			"Expand",
+			"delete-btn",
+			"Delete",
 			this.btnWrapper.dom
 		);
 		this.editBtn = new HTMLElement(
@@ -75,10 +75,10 @@ class Card {
 			"Edit",
 			this.btnWrapper.dom
 		);
-		this.deleteBtn = new HTMLElement(
+		this.expandBtn = new HTMLElement(
 			"button",
-			"delete-btn",
-			"Delete",
+			"expand-btn",
+			"Expand",
 			this.btnWrapper.dom
 		);
 		parentDom.appendChild(this.wrapper.dom);

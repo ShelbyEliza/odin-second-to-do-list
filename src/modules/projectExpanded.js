@@ -91,7 +91,7 @@ export default class ProjectExpanded {
 
 	createToDoDom(toDos) {
 		toDos.forEach((toDo) => {
-			new HTMLElement("li", "to-to-item", toDo, this.toDoWrapper);
+			new HTMLElement("li", "to-do-item", toDo, this.toDoWrapper);
 		});
 	}
 }
