@@ -1,4 +1,5 @@
 import { deleteProject } from "./storageHelper";
+import { formatDateView } from "./formatDate";
 
 class HTMLElement {
 	constructor(element, className, textContent, parentDom) {
@@ -34,12 +35,8 @@ class Card {
 		this.wrapper.dom.id = proj.id;
 		this.wrapper.dom.dataset.priority = proj.priority;
 		this.title = new HTMLElement("h3", "title", proj.title, this.wrapper.dom);
-		this.dueDate = new HTMLElement(
-			"p",
-			"due-date",
-			proj.dueDate,
-			this.wrapper.dom
-		);
+		let dateView = formatDateView(proj.dueDate);
+		this.dueDate = new HTMLElement("p", "due-date", dateView, this.wrapper.dom);
 		this.description = new HTMLElement(
 			"p",
 			"description",

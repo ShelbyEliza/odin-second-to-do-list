@@ -58,7 +58,6 @@ export default class Modal {
 
 		submitProjBtn.addEventListener("click", (e) => {
 			e.preventDefault();
-
 			let data = {
 				title: this.titleInput.value,
 				dueDate: this.dueDateInput.value,
@@ -110,6 +109,7 @@ export default class Modal {
 	openModal(projectData, card) {
 		this.dialog.showModal();
 		this.titleInput.value = projectData.title;
+
 		this.dueDateInput.value = projectData.dueDate;
 		this.descriptionInput.value = projectData.description;
 		this.priorityInput.checked = projectData.priority;
