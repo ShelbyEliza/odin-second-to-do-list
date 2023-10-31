@@ -36,6 +36,9 @@
           <label for="priority">Priority:
             <input type="checkbox" id="priority-input" name="priority" />
           </label>
+          <label for="completed">Completed:
+            <input type="checkbox" id="completed-input" name="completed" />
+          </label>
           <div class="to-do-wrapper">
             <label for="to-dos">To Dos:
               <input type="text" id="to-do-input" name="to-do" />
@@ -77,15 +80,25 @@
         <button id="ascending-btn" dataset-setting="ascending">Ascending Date</button>
         <button id="descending-btn" dataset-setting="descending">Descending Date</button>
         <button id="alphabetical-btn" dataset-setting="alpha">Alphabetical</button>
+        <button id="completed-btn">Completed</button>
       </div>
-      <!-- <h2 class="projects-heading">Priority Projects</h2> -->
-      <div id="priority-list-wrapper" class="proj-wrapper">
+      <div id="completed-wrapper-full" hidden>
+        <h2 class="projects-heading">Completed Projects</h2>
+        <div id="completed-list-wrapper" class="proj-wrapper">
+        </div>
       </div>
-      <!-- <h2 class="projects-heading">All Projects</h2> -->
-      <div id="project-list-wrapper" class="proj-wrapper">
+      <div class="priority-wrapper-full">
+        <h2 class="projects-heading">Priority Projects</h2>
+        <div id="priority-list-wrapper" class="proj-wrapper">
+        </div>
+      </div>
+      <div class="non-priority-wrapper-ful">
+
+        <h2 class="projects-heading">Other Projects</h2>
+        <div id="project-list-wrapper" class="proj-wrapper">
+        </div>
       </div>
 
-    </div>
   </body>
 
 </html>

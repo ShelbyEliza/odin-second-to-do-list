@@ -33,7 +33,6 @@ class Card {
 		this.id = proj.id;
 		this.wrapper = new HTMLElement("div", "card-wrapper");
 		this.wrapper.dom.id = proj.id;
-		this.wrapper.dom.dataset.priority = proj.priority;
 		this.title = new HTMLElement("h3", "title", proj.title, this.wrapper.dom);
 		let dateView = formatDateView(proj.dueDate);
 		this.dueDate = new HTMLElement("p", "due-date", dateView, this.wrapper.dom);
@@ -46,6 +45,10 @@ class Card {
 		this.priority = proj.priority;
 		if (this.priority === true) {
 			this.wrapper.addToClassList("priority");
+		}
+		this.completed = proj.completed;
+		if (this.completed === true) {
+			this.wrapper.addToClassList("completed");
 		}
 		this.toDoList = new HTMLElement("ul", "to-do-list", "", this.wrapper.dom);
 		if (proj.toDos) {
@@ -97,35 +100,39 @@ class Card {
 
 		this.editBtn.dom.addEventListener("click", (e) => {
 			e.preventDefault();
-
 			modal.openModal(proj, this);
 			modal.turnOnEditMode(proj);
 		});
 	}
-	getCard() {
-		return this;
+
+	replaceToDos(toDos) {
+		while (this.toDoList.dom.firstChild) {
+			this.toDoList.dom.removeChild(this.toDoList.dom.lastChild);
+		}
+		toDos.forEach((toDo) => {
+			new HTMLElement("li", "to-to-item", toDo, this.toDoList.dom);
+		});
 	}
+	toggleProperty(newData, prop) {
+		if (this[prop] !== newData) {
+			this[prop] = newData;
+			if (this[prop] === true) {
+				this.wrapper.addToClassList(prop);
+			} else {
+				this.wrapper.removeFromClassList(prop);
+			}
+		}
+	}
+
 	editCard(newDetails) {
 		this.title.dom.textContent = newDetails.title;
 		this.dueDate.dom.textContent = newDetails.dueDate;
 		this.description.dom.textContent = newDetails.description;
-		while (this.toDoList.dom.firstChild) {
-			this.toDoList.dom.removeChild(this.toDoList.dom.lastChild);
-		}
-		newDetails.toDos.forEach((toDo) => {
-			new HTMLElement("li", "to-to-item", toDo, this.toDoList.dom);
-		});
 
-		if (this.priority !== newDetails.priority) {
-			this.priority = newDetails.priority;
-			this.wrapper.dom.dataset.priority = newDetails.priority;
-			if (this.priority === true) {
-				this.wrapper.addToClassList("priority");
-			} else {
-				this.wrapper.removeFromClassList("priority");
-			}
-		}
-		// let location = document.location
+		this.toggleProperty(newDetails.priority, "priority");
+		this.toggleProperty(newDetails.completed, "completed");
+		this.replaceToDos(newDetails.toDos);
+
 		document.location.reload();
 	}
 }

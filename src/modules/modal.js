@@ -1,102 +1,115 @@
 import { addProjectData, editProjectData } from "./storageHelper";
 import { Card, HTMLElement } from "./card";
 
+const formElement = document.getElementById("modal-form");
+const dialog = document.getElementById("add-project-wrapper");
+const addToDoBtn = document.getElementById("add-to-do-btn");
+const addProjBtn = document.getElementById("add-project-btn");
+const cancelProjBtn = document.getElementById("cancel-project-btn");
+const submitProjBtn = document.getElementById("submit-project-btn");
+
+const titleInput = document.getElementById("title-input");
+const dueDateInput = document.getElementById("dueDate-input");
+const descriptionInput = document.getElementById("description-input");
+const priorityInput = document.getElementById("priority-input");
+const completedInput = document.getElementById("completed-input");
+const toDoInput = document.getElementById("to-do-input");
+const toDoDiv = document.getElementById("to-do-list-div");
+
 export default class Modal {
 	constructor() {
-		this.formElement = document.getElementById("modal-form");
-		this.dialog = document.getElementById("add-project-wrapper");
-		const addToDoBtn = document.getElementById("add-to-do-btn");
-		const addProjBtn = document.getElementById("add-project-btn");
-		const cancelProjBtn = document.getElementById("cancel-project-btn");
-		const submitProjBtn = document.getElementById("submit-project-btn");
-		this.titleInput = document.getElementById("title-input");
-		this.dueDateInput = document.getElementById("dueDate-input");
-		this.descriptionInput = document.getElementById("description-input");
-		this.priorityInput = document.getElementById("priority-input");
-		this.toDoInput = document.getElementById("to-do-input");
-		this.toDoDiv = document.getElementById("to-do-list-div");
 		this.editMode = false;
 		this.editData = "";
 		this.toDoData = [];
+		this.sort = "alpha";
 
 		addProjBtn.addEventListener("click", () => {
-			this.dialog.showModal();
+			dialog.showModal();
 		});
 
 		addToDoBtn.addEventListener("click", (e) => {
+			/** if you cancel after adding to do, the to do dom will pop up the next time project is edited until reload  */
 			e.preventDefault();
 			if (!this.toDoData) {
 				this.toDoData = [];
 			}
-			if (this.toDoInput.value !== "") {
-				if (this.toDoData.includes(this.toDoInput.value)) {
+			if (toDoInput.value !== "") {
+				if (this.toDoData.includes(toDoInput.value)) {
 					console.log("To do already exists.");
 				} else {
-					let newToDo = this.toDoInput.value;
+					let newToDo = toDoInput.value;
 
 					this.toDoData.push(newToDo);
 					this.createToDoDom(newToDo);
 				}
 			}
 
-			this.toDoInput.value = "";
-			this.toDoInput.focus();
+			toDoInput.value = "";
+			toDoInput.focus();
 		});
 
 		cancelProjBtn.addEventListener("click", (e) => {
 			e.preventDefault();
 
 			this.turnOffEditMode();
-			while (this.toDoDiv.firstChild) {
-				this.toDoDiv.removeChild(this.toDoDiv.lastChild);
-			}
-			this.toDoData = [];
-
-			this.formElement.reset();
-			this.dialog.close();
+			this.clearForm();
 		});
 
 		submitProjBtn.addEventListener("click", (e) => {
 			e.preventDefault();
 			let data = {
-				title: this.titleInput.value,
-				dueDate: this.dueDateInput.value,
-				description: this.descriptionInput.value,
-				priority: this.priorityInput.checked,
+				title: titleInput.value,
+				dueDate: dueDateInput.value,
+				description: descriptionInput.value,
+				priority: priorityInput.checked,
+				completed: completedInput.checked,
 				toDos: this.toDoData,
 			};
-			/** if this is a new project: */
+			/** Create Project: */
 			if (this.editMode !== true) {
-				let randomNumb = Math.floor(Math.random() * (500 - 1 + 1)) + 1;
-				data.id =
-					data.title[0] + data.title[2] + data.title[3] + "-" + randomNumb;
+				data.id = this.createId(data.title);
 
 				let newDataStored = addProjectData(data, "projects");
-				let parentDom;
-
-				if (newDataStored.priority === true) {
-					parentDom = document.getElementById("priority-list-wrapper");
-				} else {
-					parentDom = document.getElementById("project-list-wrapper");
-				}
+				let parentDom = this.setParentDom(
+					newDataStored.completed,
+					newDataStored.priority
+				);
 
 				new Card(newDataStored, parentDom, this);
 
-				//** else you are editing a project: */
+				//** Edit Project: */
 			} else {
 				data.id = this.editData.id;
 				let newDataStored = editProjectData(data, "projects");
 				this.card.editCard(newDataStored);
 				this.turnOffEditMode();
 			}
-			/** Reset to do list: */
-			while (this.toDoDiv.firstChild) {
-				this.toDoDiv.removeChild(this.toDoDiv.lastChild);
-			}
-			this.toDoData = [];
-			this.formElement.reset();
-			this.dialog.close();
+
+			this.clearForm();
 		});
+	}
+	setParentDom(completedStatus, priorityStatus) {
+		if (completedStatus === true) {
+			return document.getElementById("completed-list-wrapper");
+		} else {
+			if (priorityStatus === true) {
+				return document.getElementById("priority-list-wrapper");
+			} else {
+				return document.getElementById("project-list-wrapper");
+			}
+		}
+	}
+	createId(title) {
+		let randomNumb = Math.floor(Math.random() * (500 - 1 + 1)) + 1;
+		return title[0] + title[2] + title[3] + "-" + randomNumb;
+	}
+	clearForm() {
+		while (toDoDiv.firstChild) {
+			toDoDiv.removeChild(toDoDiv.lastChild);
+		}
+		this.toDoData = [];
+		formElement.reset();
+		dialog.close();
 	}
 	turnOnEditMode(data) {
 		this.editMode = true;
@@ -107,12 +120,18 @@ export default class Modal {
 		this.editData = "";
 	}
 	openModal(projectData, card) {
-		this.dialog.showModal();
-		this.titleInput.value = projectData.title;
+		dialog.showModal();
+		titleInput.value = projectData.title;
 
-		this.dueDateInput.value = projectData.dueDate;
-		this.descriptionInput.value = projectData.description;
-		this.priorityInput.checked = projectData.priority;
+		dueDateInput.value = projectData.dueDate;
+		descriptionInput.value = projectData.description;
+		priorityInput.checked = projectData.priority;
+		if (projectData.completed) {
+			completedInput.checked = projectData.completed;
+		} else {
+			completedInput.checked = false;
+		}
+
 		this.toDoData = projectData.toDos;
 		if (this.toDoData && this.toDoData.length > 0) {
 			this.toDoData.forEach((toDo) => {
@@ -121,8 +140,9 @@ export default class Modal {
 		}
 		this.card = card;
 	}
+
 	createToDoDom(newToDo) {
-		let tempDiv = new HTMLElement("div", "temp-to-do-div", "", this.toDoDiv);
+		let tempDiv = new HTMLElement("div", "temp-to-do-div", "", toDoDiv);
 		new HTMLElement("p", "temp-to-to-item", newToDo, tempDiv.dom);
 		let deleteToDoBtn = new HTMLElement(
 			"button",

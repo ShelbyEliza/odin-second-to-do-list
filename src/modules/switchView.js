@@ -1,17 +1,19 @@
 import Modal from "./modal";
-import { Card } from "./card";
 import ProjectExpanded from "./projectExpanded";
+import { Card } from "./card";
 import { sortByAlpha, sortByDue } from "./storageHelper";
 
 const ascendingBtn = document.getElementById("ascending-btn");
 const descendingBtn = document.getElementById("descending-btn");
 const alphabeticalBtn = document.getElementById("alphabetical-btn");
+const completedBtn = document.getElementById("completed-btn");
 const projectListWrapper = document.getElementById("project-list-wrapper");
 const priorityListWrapper = document.getElementById("priority-list-wrapper");
+const completedFullWrapper = document.getElementById("completed-wrapper-full");
 
 export default class View {
-	constructor() {
-		this.active = "all";
+	constructor(storage) {
+		this.currentView = "all";
 		this.currentSort = "alpha";
 
 		this.modal = new Modal();
@@ -39,6 +41,15 @@ export default class View {
 				sortByAlpha(this.view);
 				this.setCurrentSort("alpha");
 				this.switchView();
+			}
+		});
+		completedBtn.addEventListener("click", (e) => {
+			if (completedFullWrapper.hidden === true) {
+				completedFullWrapper.hidden = false;
+				completedBtn.classList.add("active-btn");
+			} else {
+				completedFullWrapper.hidden = true;
+				completedBtn.classList.remove("active-btn");
 			}
 		});
 

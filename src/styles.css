@@ -331,3 +331,8 @@ label {
 	text-align: center;
 	color: var(--foggy-love);
 }
+
+/** Sort by */
+.active-btn {
+	background-color: var(--golden-lion);
+}

@@ -31,11 +31,10 @@ function isStorageAvailable() {
 class Storage {
 	constructor(location) {
 		if (isStorageAvailable() === true) {
-			this.projects = JSON.parse(localStorage.getItem(location));
+			localStorage.setItem("view", "alpha");
+			console.log(localStorage.getItem("view"));
 
-			if (this.projects) {
-				console.log("User has existing Storage:");
-			} else {
+			if (!localStorage.getItem(location)) {
 				console.log("User has no previous data.");
 				let newStorage = {
 					active: [],
@@ -43,7 +42,8 @@ class Storage {
 				};
 				localStorage.setItem(location, JSON.stringify(newStorage));
 				console.log(localStorage.getItem(location));
-				this.projects = newStorage;
+			} else {
+				console.log("User has existing Storage:");
 			}
 		}
 	}
@@ -95,6 +95,7 @@ function sortByAlpha() {
 
 function sortByDue(setting) {
 	let storage = JSON.parse(localStorage.getItem("projects"));
+	console.log(storage);
 
 	if (setting === "ascending") {
 		storage.active.sort((a, b) => {
