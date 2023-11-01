@@ -84,7 +84,9 @@ export default class View {
 		this.currentSort = newSetting;
 	}
 	switchView() {
-		let storage = JSON.parse(localStorage.getItem("projects"));
+		// let storage = JSON.parse(localStorage.getItem("projects"));
+		let storage = localStorage.getItem("projects");
+
 		let activeProjects = storage.active;
 
 		if (activeProjects.length > 0) {

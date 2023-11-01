@@ -60,7 +60,9 @@ export default class Expanded {
 		}
 	}
 	getProject(projId) {
-		let storage = JSON.parse(localStorage.getItem("projects"));
+		// let storage = JSON.parse(localStorage.getItem("projects"));
+		let storage = localStorage.getItem("projects");
+
 		let activeProjects = storage.active;
 		let project = activeProjects.find((proj) => proj.id === projId);
 		return project;

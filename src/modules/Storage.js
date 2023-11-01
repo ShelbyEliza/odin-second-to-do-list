@@ -36,10 +36,12 @@ class Storage {
 		return localStorage.getItem(location);
 	}
 	getParsedStoredData(location) {
-		return JSON.parse(localStorage.getItem(location));
+		// return JSON.parse(localStorage.getItem(location));
+		return localStorage.getItem(location);
 	}
 	setStoredData(storage) {
-		localStorage.setItem("projects", JSON.stringify(storage));
+		// localStorage.setItem("projects", JSON.stringify(storage));
+		localStorage.setItem("projects", storage);
 	}
 	setStoredSettings(location) {
 		localStorage.setItem(location, this[location]);

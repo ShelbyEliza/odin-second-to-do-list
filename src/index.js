@@ -1,4 +1,5 @@
 import View from "./modules/View";
+import "./styles.css";
 
 class App {
 	constructor() {
