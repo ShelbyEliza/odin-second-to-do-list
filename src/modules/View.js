@@ -124,10 +124,14 @@ export default class View {
 		let activeProjects = storage.active;
 		if (activeProjects.length > 0) {
 			activeProjects.forEach((project) => {
-				if (project.priority === false) {
-					new Card(project, projectListWrapper, this.modal, this.expanded);
-				} else if (project.priority === true) {
-					new Card(project, priorityListWrapper, this.modal, this.expanded);
+				if (project.completed && project.completed === true) {
+					new Card(project, completedListWrapper, this.modal, this.expanded);
+				} else {
+					if (project.priority === false) {
+						new Card(project, projectListWrapper, this.modal, this.expanded);
+					} else if (project.priority === true) {
+						new Card(project, priorityListWrapper, this.modal, this.expanded);
+					}
 				}
 			});
 		}

@@ -82,30 +82,9 @@ export default class ModifyModal {
 				//** Edit Project: */
 			} else {
 				data.id = this.editData.id;
-
-				// if (this.editComplete !== this.editData.completed) {
-				// 	if (this.editData.completed === "true") {
-				// 		let newDataStored = myStorage.editProjectData(
-				// 			data,
-				// 			"active",
-				// 			"archived"
-				// 		);
-				// 		this.card.editCard(newDataStored);
-				// 	} else if (this.editData.completed === "false") {
-				// 		let newDataStored = myStorage.editProjectData(
-				// 			data,
-				// 			"archived",
-				// 			"active"
-				// 		);
-				// 		this.card.editCard(newDataStored);
-				// 	} else {
-				// 		console.log("Invalid completion.");
-				// 	}
-				// } else {
 				let newDataStored = myStorage.editProjectData(data, "active");
 				this.card.editCard(newDataStored);
 				this.turnOffEditMode();
-				// }
 			}
 
 			this.clearForm();
