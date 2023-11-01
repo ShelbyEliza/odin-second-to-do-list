@@ -1,7 +1,7 @@
-import { HTMLElement } from "./card";
-import { deleteProject } from "./storageHelper";
+import { HTMLElement } from "./Card";
+import { myStorage } from "./Storage";
 
-export default class ProjectExpanded {
+export default class Expanded {
 	constructor(editModal) {
 		this.projectDialog = document.getElementById("dialog-expanded");
 
@@ -28,7 +28,7 @@ export default class ProjectExpanded {
 		deleteBtn.addEventListener("click", (e) => {
 			e.preventDefault();
 
-			deleteProject(this.id, "projects");
+			myStorage.deleteProject(this.id, "active");
 
 			this.clearDom();
 			this.projectDialog.close();

@@ -235,10 +235,11 @@ label {
 	padding: 0.4rem;
 	color: var(--foggy-love);
 }
+
 #submit-project-btn,
 #cancel-project-btn {
-	border: 1px solid var(--foggy-love);
 	background-color: var(--genie);
+	border: 1px solid var(--foggy-love);
 	color: var(--foggy-love);
 }
 #submit-project-btn:hover {
@@ -333,6 +334,34 @@ label {
 }
 
 /** Sort by */
-.active-btn {
-	background-color: var(--golden-lion);
+.sort-wrapper {
+	display: flex;
+	justify-content: center;
+	gap: 1rem;
+	padding: 2rem;
+}
+.sort-wrapper button {
+	background-color: var(--midnight-express);
+	border: 1px solid var(--foggy-love);
+	color: var(--foggy-love);
+}
+.sort-wrapper button.active-btn,
+.sort-wrapper button:hover {
+	background-color: var(--pomelo-red);
+	color: var(--midnight-express);
+	border-color: var(--pomelo-red);
+}
+
+#completed-btn.active-btn {
+	background-color: var(--midnight-express);
+	color: var(--foggy-love);
+	border-color: var(--golden-lion);
+}
+#completed-btn.active-btn:hover {
+	color: var(--foggy-love);
+	border-color: var(--foggy-love);
+}
+
+.completed {
+	filter: brightness(0.8);
 }

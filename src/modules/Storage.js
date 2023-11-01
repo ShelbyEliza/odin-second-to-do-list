@@ -1,4 +1,7 @@
-export default class Storage {
+import { compareAsc, compareDesc } from "date-fns";
+import { formatNewDate } from "./formatDate.js";
+
+class Storage {
 	constructor() {
 		this.view = "alpha";
 		this.showCompleted = false;
@@ -12,29 +15,27 @@ export default class Storage {
 					archived: [],
 				});
 			} else {
-				console.log("User has previous projects data.");
+				// console.log("User has previous projects data.");
 			}
 
 			if (!this.getStoredData("view")) {
 				this.setStoredSettings("view");
 			} else {
 				this.view = this.getStoredData("view");
-				console.log("User has previous view setting.", this.view);
 			}
 			if (!this.getStoredData("showCompleted")) {
 				this.setStoredSettings("showCompleted");
 			} else {
 				this.showCompleted = this.getStoredData("showCompleted");
-				console.log(
-					"User has previous showCompleted setting.",
-					this.showCompleted
-				);
 			}
 		} else {
 			console.log("Storage is not available.");
 		}
 	}
 	getStoredData(location) {
+		return localStorage.getItem(location);
+	}
+	getParsedStoredData(location) {
 		return JSON.parse(localStorage.getItem(location));
 	}
 	setStoredData(storage) {
@@ -45,7 +46,7 @@ export default class Storage {
 	}
 
 	deleteProject(projectId, location) {
-		let storage = this.getStoredData("projects");
+		let storage = this.getParsedStoredData("projects");
 
 		let toKeep = storage[location].filter(
 			(project) => project.id !== projectId
@@ -55,7 +56,7 @@ export default class Storage {
 	}
 
 	addProjectData(data, location) {
-		let storage = this.getStoredData("projects");
+		let storage = this.getParsedStoredData("projects");
 
 		storage[location].push(data);
 		this.setStoredData(storage);
@@ -65,30 +66,54 @@ export default class Storage {
 		return newProjectData;
 	}
 
-	editProjectData(data, location) {
-		let storage = this.getStoredData("projects");
+	editProjectData(data, location, newLocation) {
+		let storage = this.getParsedStoredData("projects");
 		let editedStorage = storage[location].filter(
 			(project) => project.id !== data.id
 		);
-		editedStorage.push(data);
-		storage[location] = editedStorage;
-		this.setStoredData(storage);
+		if (!newLocation) {
+			editedStorage.push(data);
+			storage[location] = editedStorage;
+			this.setStoredData(storage);
 
-		let newProjectData = storage[location][storage[location].length - 1];
-		return newProjectData;
+			let newProjectData = storage[location][storage[location].length - 1];
+			return newProjectData;
+		} else {
+			storage[location] = editedStorage;
+			storage[newLocation].push(data);
+
+			this.setStoredData(storage);
+			let newProjectData =
+				storage[newLocation][storage[newLocation].length - 1];
+			return newProjectData;
+		}
 	}
 
 	sortByAlpha() {
-		let storage = this.getStoredData("projects");
+		let storage = this.getParsedStoredData("projects");
 
-		storage.active.sort(compareFn());
-		storage.archived.sort(compareFn());
+		storage.active.sort(function compareFn(a, b) {
+			if (a.title < b.title) {
+				return -1;
+			} else if (a.title > b.title) {
+				return 1;
+			}
+			return 0;
+		});
+		storage.archived.sort(function compareFn(a, b) {
+			if (a.title < b.title) {
+				return -1;
+			} else if (a.title > b.title) {
+				return 1;
+			}
+			return 0;
+		});
 
 		this.setStoredData(storage);
 	}
 
 	sortByDue(setting) {
-		let storage = this.getStoredData("projects");
+		let storage = this.getParsedStoredData("projects");
 
 		if (setting === "ascending") {
 			storage.active.sort((a, b) => {
@@ -113,15 +138,6 @@ export default class Storage {
 		}
 		this.setStoredData(storage);
 	}
-}
-
-function compareFn(a, b) {
-	if (a.title < b.title) {
-		return -1;
-	} else if (a.title > b.title) {
-		return 1;
-	}
-	return 0;
 }
 
 function isStorageAvailable() {
@@ -150,3 +166,6 @@ function isStorageAvailable() {
 		);
 	}
 }
+let myStorage = new Storage();
+
+export { myStorage };

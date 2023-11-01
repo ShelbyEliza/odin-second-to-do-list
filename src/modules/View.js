@@ -1,7 +1,7 @@
-import Modal from "./modal";
-import ProjectExpanded from "./projectExpanded";
-import { Card } from "./card";
-import { sortByAlpha, sortByDue } from "./storageHelper";
+import ModifyModal from "./ModifyModal";
+import Expanded from "./Expanded";
+import { Card } from "./Card";
+import { myStorage } from "./Storage";
 
 const ascendingBtn = document.getElementById("ascending-btn");
 const descendingBtn = document.getElementById("descending-btn");
@@ -9,20 +9,23 @@ const alphabeticalBtn = document.getElementById("alphabetical-btn");
 const completedBtn = document.getElementById("completed-btn");
 const projectListWrapper = document.getElementById("project-list-wrapper");
 const priorityListWrapper = document.getElementById("priority-list-wrapper");
+const completedListWrapper = document.getElementById("completed-list-wrapper");
 const completedFullWrapper = document.getElementById("completed-wrapper-full");
 
 export default class View {
-	constructor(storage) {
-		this.currentView = "all";
+	constructor() {
 		this.currentSort = "alpha";
 
-		this.modal = new Modal();
-		this.expanded = new ProjectExpanded(this.modal);
+		this.modal = new ModifyModal();
+		this.expanded = new Expanded(this.modal);
 
 		ascendingBtn.addEventListener("click", (e) => {
 			e.preventDefault();
 			if (this.currentSort !== "ascending") {
-				sortByDue("ascending", this);
+				this.switchActiveBtn();
+
+				myStorage.sortByDue("ascending");
+				ascendingBtn.classList.add("active-btn");
 				this.setCurrentSort("ascending");
 				this.switchView();
 			}
@@ -30,7 +33,10 @@ export default class View {
 		descendingBtn.addEventListener("click", (e) => {
 			e.preventDefault();
 			if (this.currentSort !== "descending") {
-				sortByDue("descending", this.view);
+				this.switchActiveBtn();
+
+				myStorage.sortByDue("descending");
+				descendingBtn.classList.add("active-btn");
 				this.setCurrentSort("descending");
 				this.switchView();
 			}
@@ -38,7 +44,10 @@ export default class View {
 		alphabeticalBtn.addEventListener("click", (e) => {
 			e.preventDefault();
 			if (this.currentSort !== "alpha") {
-				sortByAlpha(this.view);
+				this.switchActiveBtn();
+
+				myStorage.sortByAlpha();
+				alphabeticalBtn.classList.add("active-btn");
 				this.setCurrentSort("alpha");
 				this.switchView();
 			}
@@ -55,6 +64,22 @@ export default class View {
 
 		this.setAllView();
 	}
+	switchActiveBtn() {
+		switch (this.currentSort) {
+			case "alpha":
+				alphabeticalBtn.classList.remove("active-btn");
+				break;
+			case "ascending":
+				ascendingBtn.classList.remove("active-btn");
+				break;
+			case "descending":
+				descendingBtn.classList.remove("active-btn");
+				break;
+			default:
+				console.log("No switch.");
+				break;
+		}
+	}
 	setCurrentSort(newSetting) {
 		this.currentSort = newSetting;
 	}
@@ -69,12 +94,27 @@ export default class View {
 			while (projectListWrapper.firstChild) {
 				projectListWrapper.removeChild(projectListWrapper.lastChild);
 			}
+			while (completedListWrapper.firstChild) {
+				completedListWrapper.removeChild(completedListWrapper.lastChild);
+			}
 
 			activeProjects.forEach((project) => {
-				if (project.priority === false) {
-					new Card(project, projectListWrapper, this.modal, this.expanded);
-				} else if (project.priority === true) {
-					new Card(project, priorityListWrapper, this.modal, this.expanded);
+				if (project.completed === false || !project.completed) {
+					console.log(project);
+					if (project.priority === false) {
+						new Card(project, projectListWrapper, this.modal, this.expanded);
+					} else if (project.priority === true) {
+						new Card(project, priorityListWrapper, this.modal, this.expanded);
+					}
+				} else {
+					let newCard = new Card(
+						project,
+						completedListWrapper,
+						this.modal,
+						this.expanded
+					);
+
+					newCard.wrapper.addToClassList("completed");
 				}
 			});
 		}

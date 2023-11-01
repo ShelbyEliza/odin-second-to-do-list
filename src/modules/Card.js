@@ -1,4 +1,4 @@
-import { deleteProject } from "./storageHelper";
+import { myStorage } from "./Storage";
 import { formatDateView } from "./formatDate";
 
 class HTMLElement {
@@ -81,7 +81,8 @@ class Card {
 			"Expand",
 			this.btnWrapper.dom
 		);
-		parentDom.appendChild(this.wrapper.dom);
+		this.parentDom = parentDom;
+		this.parentDom.appendChild(this.wrapper.dom);
 
 		this.expandBtn.dom.addEventListener("click", (e) => {
 			e.preventDefault();
@@ -94,7 +95,8 @@ class Card {
 		this.deleteBtn.dom.addEventListener("click", (e) => {
 			e.preventDefault();
 
-			deleteProject(this.id, "projects");
+			myStorage.deleteProject(this.id, "active");
+			// deleteProject(this.id, "projects");
 			this.wrapper.dom.remove();
 		});
 

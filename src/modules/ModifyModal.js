@@ -1,5 +1,5 @@
-import { addProjectData, editProjectData } from "./storageHelper";
-import { Card, HTMLElement } from "./card";
+import { myStorage } from "./Storage";
+import { Card, HTMLElement } from "./Card";
 
 const formElement = document.getElementById("modal-form");
 const dialog = document.getElementById("add-project-wrapper");
@@ -16,10 +16,11 @@ const completedInput = document.getElementById("completed-input");
 const toDoInput = document.getElementById("to-do-input");
 const toDoDiv = document.getElementById("to-do-list-div");
 
-export default class Modal {
+export default class ModifyModal {
 	constructor() {
 		this.editMode = false;
 		this.editData = "";
+		this.editComplete = "";
 		this.toDoData = [];
 		this.sort = "alpha";
 
@@ -69,20 +70,42 @@ export default class Modal {
 			if (this.editMode !== true) {
 				data.id = this.createId(data.title);
 
-				let newDataStored = addProjectData(data, "projects");
+				let newDataStored = myStorage.addProjectData(data, "active");
 				let parentDom = this.setParentDom(
 					newDataStored.completed,
 					newDataStored.priority
 				);
+				console.log(parentDom);
 
 				new Card(newDataStored, parentDom, this);
 
 				//** Edit Project: */
 			} else {
 				data.id = this.editData.id;
-				let newDataStored = editProjectData(data, "projects");
+
+				// if (this.editComplete !== this.editData.completed) {
+				// 	if (this.editData.completed === "true") {
+				// 		let newDataStored = myStorage.editProjectData(
+				// 			data,
+				// 			"active",
+				// 			"archived"
+				// 		);
+				// 		this.card.editCard(newDataStored);
+				// 	} else if (this.editData.completed === "false") {
+				// 		let newDataStored = myStorage.editProjectData(
+				// 			data,
+				// 			"archived",
+				// 			"active"
+				// 		);
+				// 		this.card.editCard(newDataStored);
+				// 	} else {
+				// 		console.log("Invalid completion.");
+				// 	}
+				// } else {
+				let newDataStored = myStorage.editProjectData(data, "active");
 				this.card.editCard(newDataStored);
 				this.turnOffEditMode();
+				// }
 			}
 
 			this.clearForm();
@@ -112,12 +135,15 @@ export default class Modal {
 		dialog.close();
 	}
 	turnOnEditMode(data) {
+		console.log(data);
 		this.editMode = true;
+		this.editComplete = data.completed;
 		this.editData = data;
 	}
 	turnOffEditMode() {
 		this.editMode = false;
 		this.editData = "";
+		this.editComplete = "";
 	}
 	openModal(projectData, card) {
 		dialog.showModal();
