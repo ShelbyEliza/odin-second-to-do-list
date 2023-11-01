@@ -1,9 +1,11 @@
-import { resolve } from "path";
+const path = require("path");
 
-export const mode = "production";
-export const entry = "./src/index.js";
-export const devtool = "inline-source-map";
-export const output = {
-	filename: "main.js",
-	path: resolve(__dirname, "dist"),
+module.exports = {
+	mode: "production",
+	entry: "./src/index.js",
+	devtool: "inline-source-map",
+	output: {
+		filename: "main.js",
+		path: path.resolve(__dirname, "dist"),
+	},
 };
