@@ -122,7 +122,9 @@ export default class View {
 		}
 	}
 	setAllView() {
-		let storage = JSON.parse(localStorage.getItem("projects"));
+		// let storage = JSON.parse(localStorage.getItem("projects"));
+		let storage = localStorage.getItem("projects");
+
 		let activeProjects = storage.active;
 		if (activeProjects.length > 0) {
 			activeProjects.forEach((project) => {
